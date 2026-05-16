@@ -1,4 +1,4 @@
-import { Clock3, Star, Users } from "lucide-react";
+import { Clock3, Megaphone, Send } from "lucide-react";
 import { CSSProperties } from "react";
 import { Course } from "../data/courses";
 import { getCourseMarketing } from "../data/salesTracker";
@@ -26,19 +26,19 @@ export function CourseCard({ course, isSelected, onSelect }: CourseCardProps) {
       <div className="course-body">
         <div className="course-meta">
           <span>
-            <Star size={15} fill="currentColor" /> {course.rating}
-          </span>
-          <span>
-            <Users size={15} /> {course.students}
-          </span>
-          <span>
             <Clock3 size={15} /> {course.duration}
+          </span>
+          <span>
+            <Megaphone size={15} /> {marketing.ads.length} ads
+          </span>
+          <span>
+            <Send size={15} /> {marketing.emails.length} emails
           </span>
         </div>
         <h3>{course.title} - Complete Guide</h3>
         <span className="instructor-name">CourseCraft Academy</span>
         <span className="campaign-chip">
-          {marketing.ads.length} ads · {marketing.emails.length} emails · {activeAds} active
+          {activeAds} active campaign{activeAds === 1 ? "" : "s"}
         </span>
         <p>{course.outcome}</p>
         <div className="course-footer">

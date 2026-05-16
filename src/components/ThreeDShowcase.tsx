@@ -1,13 +1,16 @@
 import { Award, BarChart3, Code2, Megaphone, PenTool, PlayCircle } from "lucide-react";
+import { getWorkbookCoverageStats } from "../data/salesTracker";
 
 export function ThreeDShowcase() {
+  const coverage = getWorkbookCoverageStats();
+
   return (
     <div className="showcase" aria-label="CourseCraft learning preview">
       <div className="scene">
         <div className="progress-glass">
-          <span>Your progress</span>
-          <strong>68%</strong>
-          <small>Keep going!</small>
+          <span>Excel mapped</span>
+          <strong>{coverage.ads}</strong>
+          <small>ad rows</small>
           <svg viewBox="0 0 160 80" aria-hidden="true">
             <polyline points="4,70 34,58 62,62 92,36 126,42 156,16" />
           </svg>
@@ -32,11 +35,11 @@ export function ThreeDShowcase() {
         </div>
         <div className="certificate-card">
           <Award size={24} />
-          <span>Certificate of Completion</span>
+          <span>{coverage.emails} campaign emails</span>
         </div>
         <div className="video-card">
           <PlayCircle size={42} fill="currentColor" />
-          <span>12:45</span>
+          <span>{coverage.leads} leads</span>
         </div>
       </div>
     </div>

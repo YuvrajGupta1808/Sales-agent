@@ -856,7 +856,7 @@ main {
   line-height: 1;
 }
 
-.trusted-row {
+.tracker-row {
   display: flex;
   flex-wrap: wrap;
   gap: 26px;
@@ -866,15 +866,37 @@ main {
   color: #8b96a8;
 }
 
-.trusted-row span {
+.tracker-row span {
   flex-basis: 100%;
   text-align: center;
   font-size: 0.88rem;
 }
 
-.trusted-row strong {
+.tracker-row strong {
   color: #26334c;
   font-size: 1.2rem;
+}
+
+.source-card {
+  display: grid;
+  gap: 4px;
+  margin-top: 22px;
+  padding: 12px;
+  border: 1px solid #e0e7f2;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.source-card strong {
+  font-size: 0.82rem;
+}
+
+.source-card span,
+.source-card small {
+  color: #667386;
+  font-size: 0.78rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .detail-panel {
@@ -1426,7 +1448,10 @@ main {
 
 .review-score span {
   display: flex;
+  align-items: center;
+  gap: 6px;
   color: #ffb400;
+  font-weight: 900;
 }
 
 .review-card > small {
@@ -1632,6 +1657,16 @@ main {
   text-transform: uppercase;
 }
 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
 .users-hero h1 {
   max-width: 760px;
   margin: 12px 0 16px;
@@ -1660,9 +1695,13 @@ main {
 
 .users-hero-card {
   display: grid;
-  gap: 2px;
+  gap: 6px;
   padding: 26px;
   color: var(--ink);
+}
+
+.users-hero-card svg {
+  color: #126dff;
 }
 
 .users-hero-card strong {
@@ -1673,6 +1712,11 @@ main {
 .users-hero-card span {
   color: #667386;
   text-transform: none;
+}
+
+.users-hero-card small {
+  color: #7a8799;
+  font-weight: 800;
 }
 
 .users-kpis {
@@ -1753,6 +1797,20 @@ main {
   padding: 14px;
   border-radius: 8px;
   background: #f6f8fb;
+}
+
+.empty-state {
+  padding: 18px;
+  border: 1px dashed #cbd6e5;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #667386;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.empty-state.wide {
+  grid-column: 1 / -1;
 }
 
 .email-row strong,

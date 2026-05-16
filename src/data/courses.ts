@@ -17,8 +17,6 @@ export type Course = {
   duration: string;
   level: string;
   price: number;
-  rating: number;
-  students: string;
   color: string;
   accent: string;
   icon: LucideIcon;
@@ -44,8 +42,6 @@ export const courses: Course[] = [
     duration: "6 weeks",
     level: "Advanced",
     price: 249,
-    rating: 4.9,
-    students: "18.4k",
     color: "#f46242",
     accent: "#fff1e4",
     icon: BrainCircuit,
@@ -59,8 +55,6 @@ export const courses: Course[] = [
     duration: "5 weeks",
     level: "Intermediate",
     price: 189,
-    rating: 4.8,
-    students: "11.2k",
     color: "#176b87",
     accent: "#e3f7f6",
     icon: PenTool,
@@ -74,8 +68,6 @@ export const courses: Course[] = [
     duration: "4 weeks",
     level: "Beginner",
     price: 139,
-    rating: 4.7,
-    students: "9.8k",
     color: "#275d38",
     accent: "#eaf6df",
     icon: BarChart3,
@@ -89,8 +81,6 @@ export const courses: Course[] = [
     duration: "3 weeks",
     level: "Intermediate",
     price: 119,
-    rating: 4.8,
-    students: "7.5k",
     color: "#8b4b1f",
     accent: "#fff0d2",
     icon: Megaphone,
@@ -104,8 +94,6 @@ export const courses: Course[] = [
     duration: "8 weeks",
     level: "Advanced",
     price: 279,
-    rating: 4.9,
-    students: "15.1k",
     color: "#244cc4",
     accent: "#e9efff",
     icon: Code2,
@@ -119,8 +107,6 @@ export const courses: Course[] = [
     duration: "4 weeks",
     level: "Beginner",
     price: 99,
-    rating: 4.6,
-    students: "6.7k",
     color: "#b0355f",
     accent: "#ffe7ee",
     icon: Camera,

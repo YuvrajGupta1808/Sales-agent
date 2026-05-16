@@ -1,4 +1,5 @@
 import { ArrowRight, Award, Box, BriefcaseBusiness, Clock3, Sparkles } from "lucide-react";
+import { trackerSource } from "../data/salesTracker";
 import { Button } from "./Button";
 import { ThreeDShowcase } from "./ThreeDShowcase";
 
@@ -45,8 +46,8 @@ export function Hero() {
         <div className="mentor-card">
           <Box size={18} />
           <div>
-            <strong>Lesson 6</strong>
-            <span>Building layouts</span>
+            <strong>Marketing source</strong>
+            <span>{trackerSource.workbookPath}</span>
           </div>
         </div>
       </div>

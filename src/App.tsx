@@ -26,7 +26,7 @@ export function App() {
 
   return (
     <>
-      <Header cartCount={cartCount} />
+      <Header cartCount={cartCount} isUsersPage={isUsersPage} />
       {isUsersPage ? (
         <UsersPage />
       ) : (

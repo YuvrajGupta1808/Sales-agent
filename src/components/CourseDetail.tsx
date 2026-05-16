@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock3, Layers3, Play, Star, Users } from "lucide-react";
+import { CheckCircle2, Clock3, Layers3, Megaphone, Play, Send, Users } from "lucide-react";
 import { Course } from "../data/courses";
 import { getCourseMarketing } from "../data/salesTracker";
 import { Button } from "./Button";
@@ -28,10 +28,10 @@ export function CourseDetail({ course, activeTab, onTabChange, onEnroll }: Cours
           <p>{primaryAd?.primaryText ?? course.outcome} Learn with practical projects, field notes, and performance tips.</p>
           <div className="detail-stats">
             <span>
-              <Star size={16} fill="currentColor" /> {course.rating} rating
+              <Megaphone size={16} /> {marketing.ads.length} campaign ads
             </span>
             <span>
-              <Users size={16} /> {course.students} students
+              <Send size={16} /> {marketing.emails.length} mapped emails
             </span>
             <span>
               <Clock3 size={16} /> {course.duration}

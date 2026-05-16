@@ -1,4 +1,5 @@
-import { Check, Star, Users } from "lucide-react";
+import { Check, Megaphone, Users } from "lucide-react";
+import { getWorkbookCoverageStats, outreachLeads } from "../data/salesTracker";
 import { Button } from "./Button";
 
 type PricingProps = {
@@ -8,6 +9,7 @@ type PricingProps = {
 };
 
 export function Pricing({ isAnnual, onToggleBilling, onEnroll }: PricingProps) {
+  const coverage = getWorkbookCoverageStats();
   const proPrice = isAnnual ? 399 : 49;
 
   return (
@@ -15,31 +17,34 @@ export function Pricing({ isAnnual, onToggleBilling, onEnroll }: PricingProps) {
       <div className="bottom-card-grid">
         <article className="review-card">
           <div className="review-score">
-            <strong>4.7</strong>
+            <strong>{coverage.activeAds}</strong>
             <span>
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
+              <Megaphone size={20} />
+              Active
             </span>
           </div>
-          <small>12,456 ratings</small>
-          {[72, 20, 6, 1, 1].map((width, index) => (
-            <div className="rating-row" key={index}>
-              <span>{5 - index}★</span>
-              <div><i style={{ width: `${width}%` }} /></div>
-              <small>{width}%</small>
+          <small>active ads in the Excel tracker</small>
+          {[
+            { label: "Ads", value: coverage.ads },
+            { label: "Emails", value: coverage.emails },
+            { label: "Leads", value: coverage.leads },
+          ].map((row) => (
+            <div className="rating-row" key={row.label}>
+              <span>{row.label}</span>
+              <div><i style={{ width: `${Math.min(100, row.value * 12)}%` }} /></div>
+              <small>{row.value}</small>
             </div>
           ))}
         </article>
         <article className="community-card">
           <h3>Join a community of builders</h3>
-          <p><Users size={18} /> 120k+ active learners</p>
-          <p><Check size={18} /> Private community</p>
-          <p><Check size={18} /> Weekly live sessions</p>
+          <p><Users size={18} /> {coverage.leads} tracked outreach leads</p>
+          <p><Check size={18} /> {coverage.coursesWithCampaigns} courses with campaigns</p>
+          <p><Check size={18} /> {coverage.readyEmails} ready campaign email</p>
           <div className="avatar-stack" aria-label="Community members">
-            <span>AR</span><span>MS</span><span>JP</span><span>+90k</span>
+            {outreachLeads.slice(0, 4).map((lead) => (
+              <span key={lead.id}>{lead.name.slice(0, 2).toUpperCase()}</span>
+            ))}
           </div>
         </article>
         <article className="pricing-card featured">

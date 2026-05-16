@@ -1,6 +1,7 @@
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useMemo } from "react";
 import { Course, CourseCategory, categories, courses } from "../data/courses";
+import { getWorkbookCoverageStats, trackerSource } from "../data/salesTracker";
 import { CourseCard } from "./CourseCard";
 
 type CourseExplorerProps = {
@@ -16,6 +17,7 @@ export function CourseExplorer({
   onCategoryChange,
   onCourseSelect,
 }: CourseExplorerProps) {
+  const coverage = getWorkbookCoverageStats();
   const visibleCourses = useMemo(() => {
     if (activeCategory === "All") {
       return courses;
@@ -36,15 +38,20 @@ export function CourseExplorer({
             <input placeholder="Search topics or skills..." />
             <Search size={17} />
           </label>
-          <FilterGroup title="Category" options={["Development", "Data Science", "Design", "Marketing", "Business", "IT & Software"]} />
-          <FilterGroup title="Level" options={["Beginner", "Intermediate", "Advanced"]} />
+          <FilterGroup title="Category" options={getOptionCounts(courses, "category")} />
+          <FilterGroup title="Level" options={getOptionCounts(courses, "level")} />
           <div className="range-filter">
             <strong>Duration</strong>
             <div className="range-track"><span /></div>
-            <small>0 - 40+ hours</small>
+            <small>{getDurationSummary(courses)}</small>
           </div>
-          <FilterGroup title="Price" options={["Free", "Paid"]} />
+          <FilterGroup title="Price" options={[{ label: "Paid", count: courses.filter((course) => course.price > 0).length }]} />
           <button className="apply-filters" type="button">Apply filters</button>
+          <div className="source-card">
+            <strong>Source</strong>
+            <span>{trackerSource.workbookPath}</span>
+            <small>{coverage.sheets} sheets mapped</small>
+          </div>
         </aside>
         <div className="popular-area">
           <div className="popular-header">
@@ -67,7 +74,7 @@ export function CourseExplorer({
             ))}
           </div>
           <div className="course-grid">
-            {visibleCourses.slice(0, 4).map((course) => (
+            {visibleCourses.map((course) => (
               <CourseCard
                 course={course}
                 isSelected={selectedCourse.id === course.id}
@@ -76,15 +83,12 @@ export function CourseExplorer({
               />
             ))}
           </div>
-          <div className="trusted-row">
-            <span>Trusted by professionals from</span>
-            <strong>Google</strong>
-            <strong>Microsoft</strong>
-            <strong>amazon</strong>
-            <strong>Meta</strong>
-            <strong>IBM</strong>
-            <strong>airbnb</strong>
-            <strong>Spotify</strong>
+          <div className="tracker-row">
+            <span>Mapped from {coverage.sourcePath}</span>
+            <strong>{courses.length} courses</strong>
+            <strong>{coverage.ads} ads</strong>
+            <strong>{coverage.emails} emails</strong>
+            <strong>{coverage.leads} leads</strong>
           </div>
         </div>
       </div>
@@ -92,17 +96,35 @@ export function CourseExplorer({
   );
 }
 
-function FilterGroup({ title, options }: { title: string; options: string[] }) {
+function FilterGroup({ title, options }: { title: string; options: Array<{ label: string; count: number }> }) {
   return (
     <div className="filter-group">
       <strong>{title}</strong>
-      {options.map((option, index) => (
-        <label key={option}>
+      {options.map((option) => (
+        <label key={option.label}>
           <input type="checkbox" />
-          <span>{option}</span>
-          <small>{128 - index * 19}</small>
+          <span>{option.label}</span>
+          <small>{option.count}</small>
         </label>
       ))}
     </div>
   );
+}
+
+function getOptionCounts(list: Course[], key: "category" | "level") {
+  return Array.from(
+    list.reduce((counts, course) => {
+      counts.set(course[key], (counts.get(course[key]) ?? 0) + 1);
+      return counts;
+    }, new Map<string, number>()),
+    ([label, count]) => ({ label, count }),
+  );
+}
+
+function getDurationSummary(list: Course[]) {
+  const weekCounts = list
+    .map((course) => Number.parseInt(course.duration, 10))
+    .filter((duration) => Number.isFinite(duration));
+
+  return `${Math.min(...weekCounts)} - ${Math.max(...weekCounts)} weeks`;
 }
