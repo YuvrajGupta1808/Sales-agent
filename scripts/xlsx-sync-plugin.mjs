@@ -1,4 +1,4 @@
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, statSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import ExcelJS from "exceljs";
@@ -88,7 +88,7 @@ async function buildSnapshot() {
       ads: [],
       outreach: [],
       sheets: [],
-      generatedAt: new Date().toISOString(),
+      generatedAt: "",
       missing: true,
     };
   }
@@ -96,11 +96,12 @@ async function buildSnapshot() {
   await wb.xlsx.readFile(XLSX_PATH);
   const ads = readSheet(wb.getWorksheet("Ads"));
   const outreach = readSheet(wb.getWorksheet("Outreach"));
+  const workbookMtime = statSync(XLSX_PATH).mtime.toISOString();
   return {
     ads,
     outreach,
     sheets: wb.worksheets.map((s) => s.name),
-    generatedAt: new Date().toISOString(),
+    generatedAt: workbookMtime,
   };
 }
 
