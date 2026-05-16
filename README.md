@@ -22,7 +22,7 @@ The UI is aligned to the current workbook:
 | Workbook sheet | Current state | UI behavior |
 | --- | --- | --- |
 | `Ads` | 8 ad rows | Course cards and course detail pages show campaign counts and ad positioning. |
-| `Outreach` | Header row only, 0 leads | `/users` shows honest empty states for next actions and outreach rows. |
+| `Outreach` | 4 lead rows | `/users` shows prospect rows and next actions from the workbook. |
 | `Emails` | Not present | `/users` shows no campaign email rows instead of fake email data. |
 
 The workbook path is intentionally surfaced in the app so users know where the operational data is coming from:
@@ -70,11 +70,27 @@ Important exports:
 | `courses` | Course catalog used by the storefront. |
 | `courseAds` | Ads mirrored from the workbook `Ads` sheet. |
 | `campaignEmails` | Empty array until an `Emails` sheet is added back. |
-| `outreachLeads` | Empty array while `Outreach` has no lead rows. |
+| `outreachLeads` | Four prospect rows from the current `Outreach` sheet. |
 | `trackerSource` | Paths and sheet names shown in the UI. |
 | `getCourseMarketing(courseTitle)` | Returns ads, emails, and lead matches for a course. |
 | `getEmailDashboardStats()` | Builds `/users` KPI counts from current data. |
 | `getWorkbookCoverageStats()` | Builds marketplace and summary counts from workbook mirror data. |
+
+### Workbook Sync Snapshot
+
+The project now includes a workbook sync script:
+
+```bash
+npm run sync:xlsx
+```
+
+That command reads `marketing/sales-tracker.xlsx` and writes:
+
+```text
+src/data/trackerSnapshot.json
+```
+
+The snapshot is the simplest bridge toward a real API: it proves the workbook can be parsed into JSON with the current workbook shape (`8` ads, `4` outreach leads, no email rows).
 
 ## Future Backend/API Use Case
 
@@ -101,6 +117,8 @@ src/components/CourseDetail.tsx     Selected course + campaign preview
 src/components/UsersPage.tsx        Email/outreach status page
 src/data/courses.ts                 Course catalog
 src/data/salesTracker.ts            Workbook mirror and helper functions
+src/data/trackerSnapshot.json       Generated workbook JSON snapshot
+scripts/xlsx-sync-plugin.mjs        Workbook-to-JSON sync script
 src/styles/global.css               Visual system and layout
 marketing/sales-tracker.xlsx        Source workbook
 marketing/course-posts.md           Organic social copy per course
@@ -147,7 +165,7 @@ Excel temporary lock files should not be committed.
 - No live Gmail sending.
 - No CRM or payment integration.
 - Workbook-to-TypeScript sync is manual.
-- `/users` currently shows empty states because the workbook has no email rows and no outreach lead rows.
+- `/users` currently shows empty email states because the workbook has no `Emails` sheet.
 
 ## Good Demo Prompt
 

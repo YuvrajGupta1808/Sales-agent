@@ -1,6 +1,12 @@
 export type AdStatus = "Active" | "Draft";
 export type EmailStatus = "Ready" | "Draft";
-export type OutreachStage = "Replied" | "Cold sent" | "Booked call" | "No reply" | "Negotiating";
+export type OutreachStage =
+  | "Prospect"
+  | "Replied"
+  | "Cold sent"
+  | "Booked call"
+  | "No reply"
+  | "Negotiating";
 
 export type CourseAd = {
   id: string;
@@ -39,10 +45,13 @@ export type OutreachLead = {
   role: string;
   company: string;
   segment: string;
-  channel: string;
-  contact: string;
+  source: string;
+  email?: string;
   linkedIn: string;
-  lastTouch: string;
+  xTwitter?: string;
+  emailSent: "Yes" | "No";
+  sentDate?: string;
+  lastTouch?: string;
   stage: OutreachStage;
   owner: string;
   nextAction: string;
@@ -175,7 +184,64 @@ export const courseAds: CourseAd[] = [
 
 export const campaignEmails: CampaignEmail[] = [];
 
-export const outreachLeads: OutreachLead[] = [];
+export const outreachLeads: OutreachLead[] = [
+  {
+    id: "OR-001",
+    name: "Diego Granados",
+    role: "Senior AI Product Manager",
+    company: "Google",
+    segment: "AI / PM",
+    source: "Public LinkedIn",
+    linkedIn: "https://www.linkedin.com/in/diegogranadosh/",
+    emailSent: "No",
+    stage: "Prospect",
+    owner: "Ara",
+    nextAction: "Send AI Product Strategy syllabus + eval module teaser",
+    notes: "Wiley author on AI PM. Posts about AI evals. Strong fit for AI Product Strategy.",
+  },
+  {
+    id: "OR-002",
+    name: "Lianna Patch",
+    role: "Founder / Conversion Copywriter",
+    company: "Punchline Copy",
+    segment: "Marketing",
+    source: "Public LinkedIn",
+    linkedIn: "https://www.linkedin.com/in/liannapatch",
+    emailSent: "No",
+    stage: "Prospect",
+    owner: "Ara",
+    nextAction: "Send Launch Copy Studio offer-shape preview",
+    notes: "Spoke at MicroConf US on emotion in copy. Possible partner, not just student.",
+  },
+  {
+    id: "OR-003",
+    name: "Justin Welsh",
+    role: "Solopreneur / Newsletter Operator",
+    company: "The Saturday Solopreneur",
+    segment: "Creator",
+    source: "Public LinkedIn",
+    linkedIn: "https://www.linkedin.com/in/justinwelsh/",
+    emailSent: "No",
+    stage: "Prospect",
+    owner: "Ara",
+    nextAction: "Pitch cross-promo for Creator Business Kit",
+    notes: "175k+ newsletter subs. Best fit as affiliate / cross-promo, not direct student.",
+  },
+  {
+    id: "OR-004",
+    name: "Alex Freberg",
+    role: "Founder / Educator",
+    company: "AnalystBuilder.com",
+    segment: "Data",
+    source: "Public LinkedIn",
+    linkedIn: "https://www.linkedin.com/in/alex-freberg/",
+    emailSent: "No",
+    stage: "Prospect",
+    owner: "Ara",
+    nextAction: "Pitch Analytics That Sell as complementary cohort",
+    notes: "Runs popular YouTube on data analysis. Audience overlap with Analytics That Sell.",
+  },
+];
 
 export const trackerSource = {
   workbookPath: "marketing/sales-tracker.xlsx",
@@ -194,16 +260,14 @@ export function getCourseMarketing(courseTitle: string) {
 export function getEmailDashboardStats() {
   const readyEmails = campaignEmails.filter((email) => email.status === "Ready");
   const draftEmails = campaignEmails.filter((email) => email.status === "Draft");
-  const emailChannelTouches = outreachLeads.filter((lead) => lead.channel === "Email");
-  const needsAction = outreachLeads.filter((lead) =>
-    ["Replied", "Booked call", "No reply", "Negotiating"].includes(lead.stage),
-  );
+  const sentOutreachEmails = outreachLeads.filter((lead) => lead.emailSent === "Yes");
+  const needsAction = outreachLeads.filter((lead) => lead.nextAction.trim().length > 0);
 
   return {
     campaignEmailsTotal: campaignEmails.length,
     emailsReady: readyEmails.length,
     emailsLeft: draftEmails.length,
-    emailsTouched: emailChannelTouches.length,
+    emailsTouched: sentOutreachEmails.length,
     outreachLeadsTotal: outreachLeads.length,
     nextActions: needsAction.length,
   };

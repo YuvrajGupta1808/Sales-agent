@@ -1875,7 +1875,8 @@ main {
 
 .stage-pill.replied,
 .stage-pill.booked-call,
-.stage-pill.negotiating {
+.stage-pill.negotiating,
+.stage-pill.prospect {
   background: #e8f7ee;
   color: #1f6d48;
 }

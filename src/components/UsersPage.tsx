@@ -12,7 +12,9 @@ export function UsersPage() {
   const upcomingEmails = campaignEmails
     .filter((email) => email.status !== "Ready")
     .slice(0, 5);
-  const nextActions = outreachLeads.slice().sort((a, b) => a.lastTouch.localeCompare(b.lastTouch));
+  const nextActions = outreachLeads
+    .slice()
+    .sort((a, b) => (a.lastTouch ?? "9999-12-31").localeCompare(b.lastTouch ?? "9999-12-31"));
 
   return (
     <main className="users-page">
@@ -37,7 +39,7 @@ export function UsersPage() {
       </section>
 
       <section className="users-kpis" aria-label="Email summary">
-        <KpiCard icon={<Send size={22} />} label="Email outreach contacts" value={stats.emailsTouched} />
+        <KpiCard icon={<Send size={22} />} label="Outreach emails sent" value={stats.emailsTouched} />
         <KpiCard icon={<CheckCircle2 size={22} />} label="Campaign emails ready" value={stats.emailsReady} />
         <KpiCard icon={<Mail size={22} />} label="Campaign emails left" value={stats.emailsLeft} />
         <KpiCard icon={<UserRoundCheck size={22} />} label="Tracked outreach leads" value={stats.outreachLeadsTotal} />
@@ -80,7 +82,7 @@ export function UsersPage() {
                   <div className="lead-avatar">{lead.name.slice(0, 2).toUpperCase()}</div>
                   <div>
                     <strong>{lead.name}</strong>
-                    <span>{lead.role}, {lead.company}</span>
+                    <span>{lead.role}, {lead.company} · {lead.source}</span>
                     <p>{lead.nextAction}</p>
                   </div>
                   <span className={`stage-pill ${lead.stage.toLowerCase().replaceAll(" ", "-")}`}>
@@ -90,7 +92,7 @@ export function UsersPage() {
               ))
             ) : (
               <div className="empty-state">
-                Outreach has headers but no lead rows yet, so there are no next actions to show.
+                Outreach has no lead rows yet, so there are no next actions to show.
               </div>
             )}
           </div>
